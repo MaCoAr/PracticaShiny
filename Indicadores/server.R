@@ -17,26 +17,42 @@ library(reshape2)
 Datos <- read_excel("~/github/PracticaShiny/DatosPracticaShiny.xlsx", 
                     sheet = "Datos")
 
-DatosxServicio <- select(DatosPracticaShiny,Area,Año,Mes,Servicio,Funcionario,Incoterm_Ponderado)
-DatosxIncoterm <- select(DatosPracticaShiny,Area,Año,Mes,Termino ,Funcionario,Incoterm_Ponderado)
-
-# Convertir la información de formato largo a formato ancho 
-# (pivot la columna servicio y aplique la funcion suma a la columna varlor incoter ponderado)
-tmpDxS <- dcast(D_S, Area + Año + Mes + Funcionario ~ Servicio, fun.aggregate = sum, value.var = "Incoterm_Ponderado")
-
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
-  # Obtener las variables del filtro
-
+  
+  # Obtener las filas de datos Funcionario x Servicio,
+  # 1ro se extrajo los datos para los parametros establecidos en los filtros
+  # 2do se seleccionaron las columnas necesarias 
+  # 3ro se pasa de formato largo a ancho,
+  # (pivot la columna servicio y aplique la funcion suma a la columna varlor incoter ponderado)
   t_DxS <- reactive({
-    filter(tmpDxS, Area == input$area, Año == input$anio , Mes == input$mes)
-  }) 
+    Datos %>% 
+    filter(Area == input$area, Año == input$anio , Mes == input$mes) %>% 
+    select(Servicio,Funcionario,Incoterm_Ponderado) %>% 
+    dcast(Funcionario ~ Servicio, fun.aggregate = sum, value.var = "Incoterm_Ponderado")
+  })
   
-  output$tableDatos = renderDataTable(Datos, 
-                                      options = list(aLengthMenu = c(5, 30, 50), iDisplayLength = 5))
+  t_DxI <- reactive({
+     Datos %>% 
+      filter(Area == input$area, Año == input$anio , Mes == input$mes) %>% 
+      select(Termino,Funcionario,Incoterm_Ponderado) %>% 
+      dcast(Funcionario ~ Termino, fun.aggregate = sum, value.var = "Incoterm_Ponderado")
+  })
   
-  # Listar la información agrupada por servico 
-  output$tableServicio = renderDataTable(t_DxS(),
-                                         options = list(aLengthMenu = c(5, 10, 20, 50, 100), iDisplayLength = 5))  
+  ##  Funcion para imprimir en la consola
+  cat("Voy aquí")
+ 
+  
+  ##, Marca 1 ###
+  ##########################
+   #, Salida de la información
+  
+  output$tableDatos = renderDataTable(Datos)
+  
+  # Listar la información agrupada por Funcionario y Servico 
+  output$tableServicio = renderDataTable(t_DxS()) 
+  
+  # Listar la información agrupada por Funcionario y Termino de negociación
+  output$tableIncoterm = renderDataTable(t_DxI())
   
 })
