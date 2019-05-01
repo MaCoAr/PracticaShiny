@@ -7,12 +7,13 @@
 #    http://shiny.rstudio.com/
 #
 
-# Librerias a utilizar
+#### Librerias a utilizar ####
 library(shiny)
 library(readxl)
 library(dplyr)
 library(reshape2)
 
+#### Datos globales ####
 # Datos a utilzar en la practica
 Datos <- read_excel("~/github/PracticaShiny/DatosPracticaShiny.xlsx", 
                     sheet = "Datos")
