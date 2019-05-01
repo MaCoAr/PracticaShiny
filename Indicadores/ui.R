@@ -42,7 +42,8 @@ shinyUI(pageWithSidebar(
   
   mainPanel(
     tabsetPanel(
-      tabPanel("Operaciones x Servicio", tableOutput("tableServicio")),
+      tabPanel("Datos", dataTableOutput("tableDatos")),
+      tabPanel("Operaciones x Servicio", dataTableOutput("tableServicio")),
       tabPanel("Operaciones x Incoterm", tableOutput("tableIncoterm")),
       tabPanel("Gráfico Eficacia", plotOutput("plotEficacia")),
       tabPanel("Gráfico Eficiencia", plotOutput("plotEficiencia"))
