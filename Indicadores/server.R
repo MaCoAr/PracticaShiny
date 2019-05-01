@@ -19,6 +19,7 @@ Datos <- read_excel("~/github/PracticaShiny/DatosPracticaShiny.xlsx",
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
+  #####Obtención de Datos####
   
   # Obtener las filas de datos Funcionario x Servicio,
   # 1ro se extrajo los datos para los parametros establecidos en los filtros
@@ -31,7 +32,12 @@ shinyServer(function(input, output) {
     select(Servicio,Funcionario,Incoterm_Ponderado) %>% 
     dcast(Funcionario ~ Servicio, fun.aggregate = sum, value.var = "Incoterm_Ponderado")
   })
-  
+
+  # Obtener las filas de datos Funcionario x Termino,
+  # 1ro se extrajo los datos para los parametros establecidos en los filtros
+  # 2do se seleccionaron las columnas necesarias 
+  # 3ro se pasa de formato largo a ancho,
+  # (pivot la columna termino y aplique la funcion suma a la columna varlor incoter ponderado)
   t_DxI <- reactive({
      Datos %>% 
       filter(Area == input$area, Año == input$anio , Mes == input$mes) %>% 
@@ -39,20 +45,17 @@ shinyServer(function(input, output) {
       dcast(Funcionario ~ Termino, fun.aggregate = sum, value.var = "Incoterm_Ponderado")
   })
   
-  ##  Funcion para imprimir en la consola
+  ##  Función para imprimir en la consola
   cat("Voy aquí")
  
-  
-  ##, Marca 1 ###
-  ##########################
-   #, Salida de la información
-  
+  #####Salida de la información####
+  # Listar la totalidad de la información
   output$tableDatos = renderDataTable(Datos)
   
   # Listar la información agrupada por Funcionario y Servico 
   output$tableServicio = renderDataTable(t_DxS()) 
   
-  # Listar la información agrupada por Funcionario y Termino de negociación
+  # Listar la información agrupada por Funcionario y Incoterm
   output$tableIncoterm = renderDataTable(t_DxI())
   
 })
