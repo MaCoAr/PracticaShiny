@@ -25,12 +25,13 @@ meses <- list("Enero" = 1, "Febrero" = 2, "Marzo" = 3, "Abril" = 4, "Mayo" = 5, 
 #######################################################
 
 # Define UI for application that draws a histogram
-shinyUI(pageWithSidebar(
+shinyUI(
+  pageWithSidebar(
   # Titlo de la aplicación
   headerPanel("Indicadores de Eficiencia y Eficacia", windowTitle = "Indicadores de Eficiencia y Eficacia"),
   
   # Crear panel del usuaria
-  sidebarPanel(
+  sidebarPanel(width = 3,
     h3("Filtros"),
     #Anexar los controles para los filtros
     selectInput(inputId = "area", label = "Seleccione un área", choices = areas),

@@ -5,3 +5,6 @@ https://rstudio.github.io/shiny/tutorial/#datatables
 http://ohi-science.org/data-science-training/tidyr.html#gather-data-from-wide-to-long-format
 https://www.datanalytics.com/libro_r/la-funcion-dcast-y-datos-en-formato-ancho.html
 https://mauricioanderson.com/curso-r-dplyr/
+
+/* operaciones por filas o columnas en un Data Frame en R */
+https://rpubs.com/Rortizdu/140148
